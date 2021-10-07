@@ -80,7 +80,7 @@
             </summary>
             <param name="inventoryToUpdate"></param>
             <param name="amountToAdd"></param>
-            <param name="storeId"></param>
+            <param name="StoreFrontId"></param>
             <returns></returns>
         </member>
         <member name="M:DL.DBRepo.GetAllStoreFronts">

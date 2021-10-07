@@ -20,7 +20,7 @@ namespace Models
         //this is an example of property
         public string State { get; set; }
 
-        public int? Zipcode { get; set; }
+        public int Zipcode { get; set; }
         public int Id { get; set; }
         public List<Inventory> Inventory { get; set; }
 

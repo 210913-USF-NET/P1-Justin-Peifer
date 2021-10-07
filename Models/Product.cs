@@ -12,9 +12,9 @@ namespace Models
 
         public string Description { get; set; }
 
-        public int? Price { get; set; }
+        public int Price { get; set; }
 
-        public bool? Alcohol { get; set; }
+        public bool Alcohol { get; set; }
 //if Alcohol = true, check for age requirement (21 or older to buy)
 
         public List<Inventory> Inventory { get; set; }

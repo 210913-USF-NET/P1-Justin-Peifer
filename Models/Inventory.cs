@@ -6,12 +6,12 @@ namespace Models
     {
         
         public int Id { get; set; }
-        public int? StoreId { get; set; }
+        public int StoreFrontId { get; set; }
         
-        public int? ProductId { get; set; }
-        private int? _quantity;
+        public int ProductId { get; set; }
+        private int _quantity;
 
-        public int? Quantity
+        public int Quantity
                 {
                     get
                     {
@@ -28,15 +28,14 @@ namespace Models
                         }
                     }
                 }
-        public List<Product> Products { get; set; }
 
         public virtual Product Product { get; set; }
         public virtual StoreFront Store { get; set; }
 
 
         public Inventory() {}
-        public Inventory(int storeId, int productId, int quantity){
-            this.StoreId = storeId;
+        public Inventory(int StoreFrontId, int productId, int quantity){
+            this.StoreFrontId = StoreFrontId;
             this.ProductId = productId;
             this.Quantity = quantity;
         }

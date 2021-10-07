@@ -2,8 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Model = Models;
-using Entity = DL.Entities;
+using Models;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -11,9 +10,10 @@ namespace DL
 {
     public class DBRepo : IRepo
     {
-        private Entity.PeiferP0Context _context;
+        private P1DBContext _context;
 
-        public DBRepo(Entity.PeiferP0Context context){
+        public DBRepo(P1DBContext context)
+        {
             _context = context;
         }
 
@@ -22,20 +22,21 @@ namespace DL
         /// </summary>
         /// <param name="UserId"> userID to be linked to the newly created order</param>
         /// <returns>An empty order that has the new OrderId with the UserId contained as well</returns>
-                public Model.Order NewOrder(int UserId)
+        public Order NewOrder(int UserId)
         {
-            Entity.Order orderAdded = new Entity.Order(){
+            Order orderAdded = new Order()
+            {
                 UserId = UserId,
                 DateOrdered = DateTime.Now,
             };
-            
+
             orderAdded = _context.Add(orderAdded).Entity;
 
             _context.SaveChanges();
 
             _context.ChangeTracker.Clear();
 
-            return new Model.Order()
+            return new Order()
             {
                 Id = orderAdded.Id,
                 DateOrdered = orderAdded.DateOrdered,
@@ -48,16 +49,17 @@ namespace DL
         /// </summary>
         /// <param name="user">The collected info from the NewUserMenu</param>
         /// <returns>returns an updated version of the submitted User, complete with UserId given by the database.</returns>
-        public Model.User AddUser(Model.User user)
+        public User AddUser(User user)
         {
-            Entity.User userToAdd = new Entity.User(){
+            User userToAdd = new User()
+            {
                 Name = user.Name,
                 Email = user.Email,
                 Password = user.Password,
-                ManagerAccess = user.Access,
+                Access = user.Access,
                 Age = user.Age
             };
-            
+
             userToAdd = _context.Add(userToAdd).Entity;
 
             //the "changes" don't get executed until you call the SaveChanges method
@@ -66,13 +68,13 @@ namespace DL
             //this clears the changetracker so it returns to a clean slate
             _context.ChangeTracker.Clear();
 
-            return new Model.User()
+            return new User()
             {
                 Id = userToAdd.Id,
                 Name = userToAdd.Name,
                 Password = userToAdd.Password,
                 Age = userToAdd.Age,
-                Access = userToAdd.ManagerAccess,
+                Access = userToAdd.Access,
                 Email = userToAdd.Email
             };
         }
@@ -82,17 +84,19 @@ namespace DL
         /// Gets a list of all users stored in the database
         /// </summary>
         /// <returns>List of all Users.</returns>
-        public List<Model.User> GetAllUsers(){
+        public List<User> GetAllUsers()
+        {
 
             return _context.Users.AsNoTracking().Select(
-                User => new Model.User() {
+                User => new User()
+                {
                     Id = User.Id,
                     Email = User.Email,
                     Password = User.Password,
                     Name = User.Name,
                     Age = User.Age,
-                    Access = User.ManagerAccess
-                    }
+                    Access = User.Access
+                }
             ).ToList();
         }
 
@@ -101,69 +105,102 @@ namespace DL
         /// </summary>
         /// <param name="search"></param>
         /// <returns>A list of all users that fit under the search</returns>
-        public List<Model.User> SearchUser(string search)
+        public List<User> SearchUser(string search)
         {
             return _context.Users.Where(
                 user => user.Name.Contains(search)
             ).AsNoTracking().Select(
-                u => new Model.User() {
+                u => new User()
+                {
                     Id = u.Id,
                     Email = u.Email,
                     Password = u.Password,
                     Name = u.Name,
                     Age = u.Age,
-                    Access = u.ManagerAccess
-                    }
+                    Access = u.Access
+                }
             ).ToList();
+        }
+
+        public User GetUserById(int? id)
+        {
+            User userById =
+                _context.Users
+                .AsNoTracking()
+                //.include(i => i.inventories)
+                .FirstOrDefault(u => u.Id == id);
+
+            return new User()
+            {
+                Id = userById.Id,
+                Email = userById.Email,
+                Password = userById.Password,
+                Name = userById.Name,
+                Age = userById.Age,
+                Access = userById.Access
+                //Inventory = storeById.Inventories.Select(i => new Inventory()
+                //{
+                //    Id = i.Id,
+                //    ProductId = i.ProductId,
+                //    Quantity = i.Quantity,
+
+                //}).ToList()
+            };
+
         }
 
         /// <summary>
         /// Changes a customer account into a manager account
-        ///  by changing the ".ManagerAccess" boolean to "True"
+        ///  by changing the ".Access" boolean to "True"
         /// </summary>
         /// <param name="newManager">the user to change from customer to manager</param>
         /// <returns>The updated user object</returns>
-        public Model.User MakeUserManager(Model.User newManager)
+        public User MakeUserManager(User newManager)
         {
 
-            Entities.User userToChange = (from u in _context.Users
-                    where u.Id == newManager.Id select u).SingleOrDefault();
-            userToChange.ManagerAccess = true;
+            User userToChange = (from u in _context.Users
+                                          where u.Id == newManager.Id
+                                          select u).SingleOrDefault();
+            userToChange.Access = true;
 
             userToChange = _context.Users.Update(userToChange).Entity;
             _context.SaveChanges();
             _context.ChangeTracker.Clear();
 
-            return new Model.User() {
+            return new User()
+            {
                 Id = userToChange.Id,
                 Email = userToChange.Email,
                 Password = userToChange.Password,
                 Name = userToChange.Name,
                 Age = userToChange.Age,
-                Access = userToChange.ManagerAccess
+                Access = userToChange.Access
             };
         }
-        
+
         /// <summary>
         /// Gets more detailed order information, including LineItems, based on OrderId
         /// </summary>
         /// <param name="id">The OrderId for the order we are searching</param>
         /// <returns>The Order's information</returns>
-        public Model.Order OrderInfoById(int id){
-            Entity.Order orderById = 
+        public Order OrderInfoById(int id)
+        {
+            Order orderById =
                 _context.Orders
                 .Include(l => l.LineItems)
                 .FirstOrDefault(l => l.Id == id);
 
-            return new Model.Order() {
-                    Id = orderById.Id,
-                    DateOrdered = orderById.DateOrdered,
-                    UserId = orderById.UserId,
-                LineItems = orderById.LineItems.Select(l => new Model.LineItem(){
+            return new Order()
+            {
+                Id = orderById.Id,
+                DateOrdered = orderById.DateOrdered,
+                UserId = orderById.UserId,
+                LineItems = orderById.LineItems.Select(l => new LineItem()
+                {
                     OrderId = l.OrderId,
-                    StoreId = l.StoreId,
+                    StoreFrontId = l.StoreFrontId,
                     Quantity = l.Quantity
-                    
+
                 }).ToList()
             };
         }
@@ -173,14 +210,17 @@ namespace DL
         /// </summary>
         /// <param name="UserId">The User's ID</param>
         /// <returns>A list of every order that the User has made</returns>
-        public List<Model.Order> OrderByUserId(int UserId){
+        public List<Order> OrderByUserId(int UserId)
+        {
             return _context.Orders.Where(
                 order => order.UserId.Equals(UserId)
             ).AsNoTracking().Select(
-                Order => new Model.Order() {
+                Order => new Order()
+                {
                     Id = Order.Id,
                     DateOrdered = Order.DateOrdered,
-                    UserId = Order.UserId}
+                    UserId = Order.UserId
+                }
             ).ToList();
         }
 
@@ -189,13 +229,15 @@ namespace DL
         /// Gets a list of every order in the database
         /// </summary>
         /// <returns>The list of every order</returns>
-        public List<Model.Order> GetAllOrders(){
+        public List<Order> GetAllOrders()
+        {
             return _context.Orders.AsNoTracking().Select(
-                Order => new Model.Order() {
+                Order => new Order()
+                {
                     Id = Order.Id,
                     DateOrdered = Order.DateOrdered,
                     UserId = Order.UserId
-                    }
+                }
             ).ToList();
         }
 
@@ -209,7 +251,7 @@ namespace DL
         // var order = _context.Orders.Where(order => order.UserId.Equals(orderId)).FirstOrDefault();
         //     _context.Orders.DeleteObject(order);
         // }
-        
+
 
         /// <summary>
         /// Updates the order that was opened at the start of the OrderMenu to add bought LineItems
@@ -217,12 +259,15 @@ namespace DL
         /// <param name="storeOrderedFrom"> The Store that the order was placed at</param>
         /// <param name="order">The Order, should include LineItems</param>
         /// <returns>Returns the placed order</returns>
-        public Model.Order PlaceOrder(Model.StoreFront storeOrderedFrom, Model.Order order){
+        public Order PlaceOrder(StoreFront storeOrderedFrom, Order order)
+        {
 
-            foreach (Model.LineItem item in order.LineItems){
-                Entity.LineItem addedItem = new Entity.LineItem() {
+            foreach (LineItem item in order.LineItems)
+            {
+                LineItem addedItem = new LineItem()
+                {
                     OrderId = order.Id,
-                    StoreId = storeOrderedFrom.Id,
+                    StoreFrontId = storeOrderedFrom.Id,
                     ProductId = item.ProductId,
                     Quantity = item.Quantity
                 };
@@ -238,35 +283,40 @@ namespace DL
         /// </summary>
         /// <param name="storeToUpdate">The store that needs to be updated</param>
         /// <param name="orderedProduct"> A list of LineItems that were bought. This needs to be subtracted from the store's inventory</param>
-        public void UpdateStock(Model.StoreFront storeToUpdate, List<Model.LineItem> orderedProduct){
-            foreach (Model.LineItem item in orderedProduct){
-            Entities.Inventory updatedInventory = (from i in _context.Inventories where i.ProductId == item.ProductId && i.StoreId == storeToUpdate.Id
-            select i).SingleOrDefault();
+        public void UpdateStock(StoreFront storeToUpdate, List<LineItem> orderedProduct)
+        {
+            foreach (LineItem item in orderedProduct)
+            {
+                Inventory updatedInventory = (from i in _context.Inventories
+                                                       where i.ProductId == item.ProductId && i.StoreFrontId == storeToUpdate.Id
+                                                       select i).SingleOrDefault();
 
-            updatedInventory.Quantity = updatedInventory.Quantity - item.Quantity;
+                updatedInventory.Quantity = updatedInventory.Quantity - item.Quantity;
 
             }
             _context.SaveChanges();
             _context.ChangeTracker.Clear();
-            }
+        }
 
         /// <summary>
         /// Updates from a Manager's perspective, using an int with
         /// </summary>
         /// <param name="inventoryToUpdate"></param>
         /// <param name="amountToAdd"></param>
-        /// <param name="storeId"></param>
+        /// <param name="StoreFrontId"></param>
         /// <returns></returns>
-        public int UpdateStock(Model.Inventory inventoryToUpdate, int amountToAdd, int storeId){
-            Entity.Inventory inventoryToEdit = new Entity.Inventory() {
+        public int UpdateStock(Inventory inventoryToUpdate, int amountToAdd, int StoreFrontId)
+        {
+            Inventory inventoryToEdit = new Inventory()
+            {
                 Id = inventoryToUpdate.Id,
-                StoreId = storeId,
+                StoreFrontId = StoreFrontId,
                 ProductId = inventoryToUpdate.ProductId,
-                Quantity = inventoryToUpdate.Quantity+amountToAdd
-                                
+                Quantity = inventoryToUpdate.Quantity + amountToAdd
+
             };
 
-            
+
 
             inventoryToEdit = _context.Inventories.Update(inventoryToEdit).Entity;
             _context.SaveChanges();
@@ -279,17 +329,19 @@ namespace DL
         /// Gets a list of all existing storefronts
         /// </summary>
         /// <returns>A list of all existing storefronts</returns>
-        public List<Model.StoreFront> GetAllStoreFronts(){
+        public List<StoreFront> GetAllStoreFronts()
+        {
 
             //same as select * from StoreFront in sql query
             return _context.StoreFronts.AsNoTracking().Select(
-                Storefront => new Model.StoreFront() {
+                Storefront => new StoreFront()
+                {
                     Id = Storefront.Id,
                     State = Storefront.State,
-                    Zipcode = Storefront.ZipCode
-                    }
+                    Zipcode = Storefront.Zipcode
+                }
             ).ToList();
-            
+
         }
 
         /// <summary>
@@ -297,24 +349,26 @@ namespace DL
         /// </summary>
         /// <param name="id">The storefront's Id</param>
         /// <returns>A detailed object of the store, which includes a list of the store's inventory.</returns>
-        public Model.StoreFront StoreById(int id)
+        public StoreFront StoreById(int id)
         {
-            Entity.StoreFront storeById = 
+            StoreFront storeById =
                 _context.StoreFronts
                 .AsNoTracking()
-                .Include(i => i.Inventories)
+                //.include(i => i.inventories)
                 .FirstOrDefault(i => i.Id == id);
 
-            return new Model.StoreFront() {
-                    Id = storeById.Id,
-                    Zipcode = storeById.ZipCode,
-                    State = storeById.State,
-                Inventory = storeById.Inventories.Select(i => new Model.Inventory(){
-                    Id = i.Id,
-                    ProductId = i.ProductId,
-                    Quantity = i.Quantity,
-                    
-                }).ToList()
+            return new StoreFront()
+            {
+                Id = storeById.Id,
+                Zipcode = storeById.Zipcode,
+                State = storeById.State,
+                //Inventory = storeById.Inventories.Select(i => new Inventory()
+                //{
+                //    Id = i.Id,
+                //    ProductId = i.ProductId,
+                //    Quantity = i.Quantity,
+
+                //}).ToList()
             };
         }
 
@@ -322,43 +376,47 @@ namespace DL
         /// Gets a list of every product that Beelicious sells
         /// </summary>
         /// <returns>List of all products</returns>
-        public List<Model.Product> GetAllProducts(){
+        public List<Product> GetAllProducts()
+        {
 
-                    return _context.Products.AsNoTracking().Select(
-                        Product => new Model.Product() {
-                            Id = Product.Id,
-                            Name = Product.Name,
-                            Description = Product.Description,
-                            Price = Product.Price,
-                            Alcohol = Product.Alcohol
-                            }
-                    ).ToList();
+            return _context.Products.AsNoTracking().Select(
+                Product => new Product()
+                {
+                    Id = Product.Id,
+                    Name = Product.Name,
+                    Description = Product.Description,
+                    Price = Product.Price,
+                    Alcohol = Product.Alcohol
                 }
-                
+            ).ToList();
+        }
+
         /// <summary>
         /// Looks up a detailed view of a product, including the inventory, based on its Id
         /// </summary>
         /// <param name="id"> the product's unique Id</param>
         /// <returns>a Product and the inventory that each store has of it</returns>
-        public Model.Product ProductByID(int id)
+        public Product ProductByID(int id)
         {
-            Entity.Product productByID = 
+            Product productByID =
                 _context.Products
                 .AsNoTracking()
                 .FirstOrDefault(i => i.Id == id);
 
-            return new Model.Product() {
-                    Id = productByID.Id,
-                    Name = productByID.Name,
-                    Description = productByID.Description,
-                    Price = productByID.Price,
-                    Alcohol = productByID.Alcohol,
-                Inventory = productByID.Inventories.Select(i => new Model.Inventory(){
-                    Id = i.Id,
-                    ProductId = i.ProductId,
-                    Quantity = i.Quantity,
-                    
-                }).ToList()
+            return new Product()
+            {
+                Id = productByID.Id,
+                Name = productByID.Name,
+                Description = productByID.Description,
+                Price = productByID.Price,
+                Alcohol = productByID.Alcohol,
+                //Inventory = productByID.Inventories.Select(i => new Inventory()
+                //{
+                //    Id = i.Id,
+                //    ProductId = i.ProductId,
+                //    Quantity = i.Quantity,
+
+                //}).ToList()
             };
         }
 
@@ -367,18 +425,20 @@ namespace DL
         /// gets a list of all inventory Beelicious has
         /// </summary>
         /// <returns>A list of every inventory item</returns>
-        public List<Model.Inventory> GetAllInventory(){
+        public List<Inventory> GetAllInventory()
+        {
             //same as select * from Inventory in sql query
             return _context.Inventories.AsNoTracking().Select(
-                Inventory => new Model.Inventory() {
+                Inventory => new Inventory()
+                {
                     Id = Inventory.Id,
-                    StoreId = Inventory.StoreId,
+                    StoreFrontId = Inventory.StoreFrontId,
                     ProductId = Inventory.ProductId,
                     Quantity = Inventory.Quantity
-                    }
+                }
             ).ToList();
         }
-        
-        
+
+
     }
 }

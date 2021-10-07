@@ -20,7 +20,7 @@ namespace Models
 
         public int Id{get; set;}
 
-        public int? Age{get; set;}
+        public int Age{get; set;}
         
         private string _name;
         public string Name{
@@ -71,7 +71,7 @@ namespace Models
 
         public string Password{get; set;}
 
-        public bool? Access{get;set;}//is this a customer, manager, or VIP?
+        public bool Access{get;set;}//is this a customer, manager, or VIP?
 
         // public List<Order> Orders 
         // {

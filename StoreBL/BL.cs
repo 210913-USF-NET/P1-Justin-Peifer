@@ -28,6 +28,10 @@ namespace SBL
         public List<User> SearchUser(string search){
             return _repo.SearchUser(search);
         }
+        public User GetUserById(int? id)
+        {
+            return _repo.GetUserById(id);
+        }
 
         public List<User> GetAllUsers()
         {
@@ -67,8 +71,8 @@ namespace SBL
             _repo.UpdateStock(storeToUpdate, orderedProduct);
         }
 
-        public int UpdateStock(Inventory inventoryToUpdate, int amountToAdd, int storeId){
-                    return _repo.UpdateStock(inventoryToUpdate, amountToAdd, storeId);
+        public int UpdateStock(Inventory inventoryToUpdate, int amountToAdd, int StoreFrontId){
+                    return _repo.UpdateStock(inventoryToUpdate, amountToAdd, StoreFrontId);
                 }
         
 

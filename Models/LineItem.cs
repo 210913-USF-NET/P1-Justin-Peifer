@@ -2,10 +2,11 @@ namespace Models
 {
     public class LineItem
     {
+        public int Id { get; set;  }
         public int OrderId { get; set; }
-        public int? StoreId { get; set; }
+        public int StoreFrontId { get; set; }
         public int ProductId { get; set; }
-        public int? Quantity { get; set; }
+        public int Quantity { get; set; }
 
         
         public virtual Order Order { get; set; }
@@ -14,9 +15,9 @@ namespace Models
 
         public LineItem() {}
 
-        public LineItem (int OrderId, int StoreId, int ProductId, int Quantity){
+        public LineItem (int OrderId, int StoreFrontId, int ProductId, int Quantity){
             this.OrderId = OrderId;
-            this.StoreId = StoreId;
+            this.StoreFrontId = StoreFrontId;
             this.ProductId = ProductId;
             this.Quantity = Quantity;
         }

@@ -14,7 +14,7 @@ namespace DL
 
         void UpdateStock(StoreFront storeToUpdate, List<LineItem> orderedProduct);
 
-        int UpdateStock(Inventory inventoryToUpdate, int amountToAdd, int storeId);//method overloading
+        int UpdateStock(Inventory inventoryToUpdate, int amountToAdd, int StoreFrontId);//method overloading
         
 
         //Users:
@@ -22,11 +22,12 @@ namespace DL
         List<User> GetAllUsers();
         User AddUser(User user);
         List<User> SearchUser(string search);
+        User GetUserById(int? id);
         //Products:
         List<Product> GetAllProducts();
         Product ProductByID(int id);
 
-        // List<Product> ProductByStoreID();
+        //List<Product> ProductByStoreFrontId();
         StoreFront StoreById(int Id);
 
         //inventory

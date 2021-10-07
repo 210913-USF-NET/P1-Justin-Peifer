@@ -60,7 +60,7 @@ namespace Tests
         [Theory]
         [InlineData(5)]
         [InlineData(25)]
-        public void AgeShouldTakeNumbers(int? input)
+        public void AgeShouldTakeNumbers(int input)
         {
         //Given
             User test = new User();
@@ -85,7 +85,7 @@ namespace Tests
         [Theory]
         [InlineData(0)]
         [InlineData(205454563)]
-        public void InventoryCanAcceptNonnegativeValues(int? value)
+        public void InventoryCanAcceptNonnegativeValues(int value)
         {
         
             Inventory test = new Inventory();
