@@ -32,7 +32,7 @@ namespace WebUI
         //container that holds the resoiurces that the app needs
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddHttpContextAccessor();
             services.AddDistributedMemoryCache();
             services.AddSession();
             services.AddControllersWithViews();

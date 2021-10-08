@@ -6,8 +6,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using SBL;
 using Models;
-using Microsoft.AspNetCore.Session;
-
 namespace WebUI.Controllers
 {
     public class UserController : Controller
@@ -31,9 +29,9 @@ namespace WebUI.Controllers
         // GET: UserController/Profile/5
         public ActionResult Profile(int id)
         {
-            if (HttpContext.Session.GetInt32("CurrentUser") != null)
+            if (Request.Cookies["CurrentUserId"] != null)
             {
-                User currentUser = _bl.GetUserById(HttpContext.Session.GetInt32("CurrentUser"));
+                User currentUser = _bl.GetUserById(Convert.ToInt32(Request.Cookies["CurrentUserId"]));
                 return View(currentUser);
             }
             else
@@ -71,7 +69,21 @@ namespace WebUI.Controllers
         // GET: UserController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            if (Request.Cookies["CurrentUserId"] != null)
+            {
+                User currentUser = _bl.GetUserById(Convert.ToInt32(Request.Cookies["CurrentUserId"]));
+                if (currentUser.Access == true)
+                {
+                    User targetUser = _bl.GetUserById(id);
+
+                    return View(targetUser);
+                }
+                else return View(currentUser);
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
 
         // POST: UserController/Edit/5
@@ -124,7 +136,8 @@ namespace WebUI.Controllers
             {
                 if (email.ToLower() == allUsers[x].Email.ToLower() && password == allUsers[x].Password)
                 {
-                    HttpContext.Session.SetInt32("CurrentUser", allUsers[x].Id);
+                    Response.Cookies.Append("CurrentUserId", allUsers[x].Id.ToString());
+                    Response.Cookies.Append("CurrentUserName", allUsers[x].Name);
                     return RedirectToAction("Profile", allUsers[x].Id);
                 }
             }

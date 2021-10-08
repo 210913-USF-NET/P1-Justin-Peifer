@@ -23,4 +23,9 @@
     <ProjectReference Include="..\StoreBL\StoreBL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Order\" />
+    <Folder Include="Views\StoreFront\" />
+  </ItemGroup>
+
 </Project>
