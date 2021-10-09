@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Web;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SBL;
 using Models;
+
+
 namespace WebUI.Controllers
 {
     public class UserController : Controller
@@ -16,9 +19,9 @@ namespace WebUI.Controllers
             _bl = bl;
         }
 
-        
+
         // GET: UserController
-        
+
         public ActionResult Index()
         {
             if (Request.Cookies["CurrentUserId"] != null)
@@ -137,7 +140,14 @@ namespace WebUI.Controllers
 
         public ActionResult Login()
         {
-            return View();
+            if (Request.Cookies["CurrentUserId"] != null)
+            {
+                return RedirectToAction("Profile", Request.Cookies["CurrentUserId"]);
+            }
+            else
+            {
+                return View();
+            }
         }
 
         [HttpPost]
@@ -158,6 +168,18 @@ namespace WebUI.Controllers
             return RedirectToAction("Login");
         }
 
-        
+
+        public ActionResult Logout()
+        {
+            if (Request.Cookies["CurrentUserId"] != null)
+            {
+                Response.Cookies.Delete("CurrentUserId");
+                Response.Cookies.Delete("CurrentUserName");
+                Response.Cookies.Delete("CurrentUserAccess");
+            }
+            return RedirectToAction("Login");
+        }
+
+
     }
 }
