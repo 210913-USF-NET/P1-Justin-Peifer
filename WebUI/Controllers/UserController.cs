@@ -22,14 +22,22 @@ namespace WebUI.Controllers
 
         // GET: UserController
 
-        public ActionResult Index()
+        public ActionResult Index(string searching)
         {
             if (Request.Cookies["CurrentUserId"] != null)
             {
                 if (Request.Cookies["CurrentUserAccess"] == "True")
                 {
+                    if (!String.IsNullOrEmpty(searching))
+                    {
+                        List<User> searchResults = _bl.SearchUser(searching);
+                        return View(searchResults);
+                    }
+                    else
+                    {
                     List<User> allUsers = _bl.GetAllUsers();
                     return View(allUsers);
+                    }
                 }
                 else
                 {

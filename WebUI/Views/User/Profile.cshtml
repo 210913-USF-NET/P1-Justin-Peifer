@@ -33,8 +33,9 @@
 <div>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Logout", "Logout")
-    @if (Context.Request.Cookies["CurrentUserAccess"] == "True") 
+    <br />
+    @if (Context.Request.Cookies["CurrentUserAccess"] == "True")
     {
-        <a asp-action="Index"> | Back to List</a>
+        @Html.ActionLink("View all users", "Index");
     }
 </div>

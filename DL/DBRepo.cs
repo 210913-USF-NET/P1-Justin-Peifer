@@ -108,7 +108,7 @@ namespace DL
         public List<User> SearchUser(string search)
         {
             return _context.Users.Where(
-                user => user.Name.Contains(search)
+                user => user.Name.ToLower().Contains(search.ToLower())
             ).AsNoTracking().Select(
                 u => new User()
                 {
