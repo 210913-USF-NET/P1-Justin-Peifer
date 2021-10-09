@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\Management\" />
     <Folder Include="Views\Order\" />
     <Folder Include="Views\StoreFront\" />
   </ItemGroup>

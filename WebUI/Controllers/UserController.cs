@@ -21,9 +21,22 @@ namespace WebUI.Controllers
         
         public ActionResult Index()
         {
-
-            List<User> allUsers = _bl.GetAllUsers();
-            return View(allUsers);
+            if (Request.Cookies["CurrentUserId"] != null)
+            {
+                if (Request.Cookies["CurrentUserAccess"] == "True")
+                {
+                    List<User> allUsers = _bl.GetAllUsers();
+                    return View(allUsers);
+                }
+                else
+                {
+                    return RedirectToAction("Profile", Convert.ToInt32(Request.Cookies["CurrentUserId"]));
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
         }
 
         // GET: UserController/Profile/5
@@ -138,6 +151,7 @@ namespace WebUI.Controllers
                 {
                     Response.Cookies.Append("CurrentUserId", allUsers[x].Id.ToString());
                     Response.Cookies.Append("CurrentUserName", allUsers[x].Name);
+                    Response.Cookies.Append("CurrentUserAccess", allUsers[x].Access.ToString());
                     return RedirectToAction("Profile", allUsers[x].Id);
                 }
             }
