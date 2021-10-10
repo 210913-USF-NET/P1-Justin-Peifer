@@ -20,9 +20,9 @@ namespace SBL
             return _repo.GetAllStoreFronts();
         }
 
-        public User MakeUserManager(User newManager)
+        public User EditUser(User userToEdit)
         {
-            return _repo.MakeUserManager(newManager);
+            return _repo.EditUser(userToEdit);
         }
 
         public List<User> SearchUser(string search){

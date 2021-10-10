@@ -17,7 +17,7 @@ namespace SBL
         List<Inventory> GetInventoryByStoreId(int id);
         User AddUser(User user);
 
-        User MakeUserManager(User newManager);
+        User EditUser(User userToEdit);
         List<User> SearchUser(string search);
         User GetUserById(int? id);
         Order NewOrder(int userId);

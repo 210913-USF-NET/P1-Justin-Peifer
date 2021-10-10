@@ -155,27 +155,23 @@ namespace DL
         /// </summary>
         /// <param name="newManager">the user to change from customer to manager</param>
         /// <returns>The updated user object</returns>
-        public User MakeUserManager(User newManager)
+        public User EditUser(User userToEdit)
         {
 
-            User userToChange = (from u in _context.Users
-                                          where u.Id == newManager.Id
-                                          select u).SingleOrDefault();
-            userToChange.Access = true;
-
-            userToChange = _context.Users.Update(userToChange).Entity;
+            User editedUser = new User()
+            {
+                Id = userToEdit.Id,
+                Name = userToEdit.Name,
+                Password = userToEdit.Password,
+                Email = userToEdit.Email,
+                Age = userToEdit.Age,
+                Access = userToEdit.Access
+            };
+            editedUser = _context.Users.Update(editedUser).Entity;
             _context.SaveChanges();
             _context.ChangeTracker.Clear();
 
-            return new User()
-            {
-                Id = userToChange.Id,
-                Email = userToChange.Email,
-                Password = userToChange.Password,
-                Name = userToChange.Name,
-                Age = userToChange.Age,
-                Access = userToChange.Access
-            };
+            return editedUser;
         }
 
         /// <summary>

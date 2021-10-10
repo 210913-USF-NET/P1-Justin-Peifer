@@ -93,6 +93,7 @@ namespace WebUI.Controllers
         // GET: UserController/Edit/5
         public ActionResult Edit(int id)
         {
+            ViewBag.UserToEditId = id;
             if (Request.Cookies["CurrentUserId"] != null)
             {
                 User currentUser = _bl.GetUserById(Convert.ToInt32(Request.Cookies["CurrentUserId"]));
@@ -102,21 +103,26 @@ namespace WebUI.Controllers
 
                     return View(targetUser);
                 }
-                else return View(currentUser);
+                else
+                {
+                    return View(currentUser);
+                }
             }
-            else
-            {
-                return RedirectToAction("Login");
-            }
+            else return RedirectToAction("Login");
         }
 
         // POST: UserController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(User user)
         {
             try
             {
+                if (ModelState.IsValid)
+                {
+                    _bl.EditUser(user);
+                    return RedirectToAction(nameof(Index));
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch

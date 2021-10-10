@@ -18,7 +18,7 @@ namespace DL
         
 
         //Users:
-        User MakeUserManager(User newManager);
+        User EditUser(User userToEdit);
         List<User> GetAllUsers();
         User AddUser(User user);
         List<User> SearchUser(string search);

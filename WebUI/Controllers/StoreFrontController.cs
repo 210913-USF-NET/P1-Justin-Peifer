@@ -42,6 +42,14 @@ namespace WebUI.Controllers
             return View();
         }
 
+        public ActionResult ProductDetails(Inventory inventory)
+        {
+            Product productInfo = _bl.ProductByID(inventory.ProductId);
+            ViewBag.chosenProductInv = inventory;
+            ViewBag.chosenProduct = productInfo;
+            return View();
+        }
+
         // GET: HomeController1/Create
         public ActionResult Create()
         {
