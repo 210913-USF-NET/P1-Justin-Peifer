@@ -425,6 +425,22 @@ namespace DL
             };
         }
 
+        public Inventory InventoryById(int id)
+        {
+            Inventory InventoryById =
+                _context.Inventories
+                .AsNoTracking()
+                .FirstOrDefault(i => i.Id == id);
+
+            return new Inventory()
+            {
+                Id = InventoryById.Id,
+                StoreFrontId = InventoryById.StoreFrontId,
+                ProductId = InventoryById.ProductId,
+                Quantity = InventoryById.Quantity
+            };
+        }
+
         //inventory
         /// <summary>
         /// gets a list of all inventory Beelicious has

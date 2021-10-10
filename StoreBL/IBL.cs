@@ -15,6 +15,7 @@ namespace SBL
         Product ProductByID(int id);
         List<Inventory> GetAllInventory();
         List<Inventory> GetInventoryByStoreId(int id);
+        Inventory InventoryById(int id);
         User AddUser(User user);
 
         User EditUser(User userToEdit);

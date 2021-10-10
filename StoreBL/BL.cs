@@ -92,7 +92,10 @@ namespace SBL
         {
             return _repo.GetInventoryByStoreId(id);
         }
-
+        public Inventory InventoryById(int id)
+        {
+            return _repo.InventoryById(id);
+        }
         public StoreFront StoreById(int id)
         {
             return _repo.StoreById(id);

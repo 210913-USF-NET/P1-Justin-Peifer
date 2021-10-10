@@ -33,6 +33,7 @@ namespace DL
         //inventory
         List<Inventory> GetAllInventory();
         List<Inventory> GetInventoryByStoreId(int id);
+        Inventory InventoryById(int id);
         //Orders
         // void ClearBadOrder(int orderId);
         Order NewOrder(int userId);

@@ -42,11 +42,12 @@ namespace WebUI.Controllers
             return View();
         }
 
-        public ActionResult ProductDetails(Inventory inventory)
+        public ActionResult ProductDetails(int id)
         {
-            Product productInfo = _bl.ProductByID(inventory.ProductId);
-            ViewBag.chosenProductInv = inventory;
-            ViewBag.chosenProduct = productInfo;
+            Inventory stock = _bl.InventoryById(id);
+            Product productDetail = _bl.ProductByID(stock.ProductId);
+            ViewBag.ChosenProductInv = stock;
+            ViewBag.ChosenProduct = productDetail;
             return View();
         }
 

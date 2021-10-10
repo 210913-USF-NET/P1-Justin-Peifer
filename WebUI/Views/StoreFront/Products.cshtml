@@ -23,12 +23,12 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (Inventory stock in ViewBag.Inventory)
+        @for(int z = 0; z<Enumerable.Count(ViewBag.Inventory); z++)
         {
             Product currentProductInfo = new Product();
             @for (int x =0; x<Enumerable.Count(ViewBag.Product); x++)
             {
-                if (stock.ProductId == ViewBag.Product[x].Id)
+                if (ViewBag.Inventory[z].ProductId == ViewBag.Product[x].Id)
                 {
                     currentProductInfo = ViewBag.Product[x];
                     x = Enumerable.Count(ViewBag.Product);
@@ -36,7 +36,7 @@
             }
             <tr>
                 <td>
-                    @stock.Quantity
+                    @ViewBag.Inventory[z].Quantity
                 </td>
                 <td>
                     @currentProductInfo.Name
@@ -45,9 +45,9 @@
                     @currentProductInfo.Description
                 </td>
                 <td>
-                    <a asp-action="ProductDetails" asp-route-id="@stock">Order</a>
+                    @Html.ActionLink("Order", "ProductDetails", new { id = ViewBag.Inventory[z].Id })
                     @*<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
                 </td>
             </tr>
         }
