@@ -426,13 +426,6 @@ namespace DL
                 Description = productByID.Description,
                 Price = productByID.Price,
                 Alcohol = productByID.Alcohol,
-                //Inventory = productByID.Inventories.Select(i => new Inventory()
-                //{
-                //    Id = i.Id,
-                //    ProductId = i.ProductId,
-                //    Quantity = i.Quantity,
-
-                //}).ToList()
             };
         }
 

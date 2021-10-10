@@ -12,6 +12,7 @@ namespace SBL
         List<StoreFront> GetAllStoreFronts();
         List<User> GetAllUsers();
         List<Product> GetAllProducts();
+        Product ProductByID(int id);
         List<Inventory> GetAllInventory();
         List<Inventory> GetInventoryByStoreId(int id);
         User AddUser(User user);

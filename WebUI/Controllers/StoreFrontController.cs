@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Dynamic;
 using Models;
 using SBL;
 
@@ -29,9 +30,16 @@ namespace WebUI.Controllers
         // GET: HomeController1/Details/5
         public ActionResult Products(int id)
         {
+            List<Product> productInfo = new List<Product>();
             List<Inventory> storeInventory = _bl.GetInventoryByStoreId(id);
-            
-            return View(storeInventory);
+            for(int x =0; x<storeInventory.Count(); x++)
+            {
+                productInfo.Add(_bl.ProductByID(storeInventory[x].ProductId));
+            }
+
+            ViewBag.Inventory = storeInventory;
+            ViewBag.Product = productInfo;
+            return View();
         }
 
         // GET: HomeController1/Create
