@@ -354,7 +354,7 @@ namespace DL
             StoreFront storeById =
                 _context.StoreFronts
                 .AsNoTracking()
-                //.include(i => i.inventories)
+                /*.include(i => i.Inventories)*/
                 .FirstOrDefault(i => i.Id == id);
 
             return new StoreFront()
@@ -370,6 +370,22 @@ namespace DL
 
                 //}).ToList()
             };
+        }
+
+        public List<Inventory> GetInventoryByStoreId(int id)
+        {
+            return _context.Inventories.Where(
+                stock => stock.StoreFrontId.Equals(id))
+                .Include(l => l.Product)
+                .AsNoTracking().Select(
+                i => new Inventory()
+                {
+                    Id = i.Id,
+                    StoreFrontId = i.StoreFrontId,
+                    ProductId = i.ProductId,
+                    Quantity = i.Quantity,
+                    }
+            ).ToList();
         }
 
         /// <summary>

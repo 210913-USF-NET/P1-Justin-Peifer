@@ -88,6 +88,11 @@ namespace SBL
             return _repo.GetAllInventory();
         }
 
+        public List<Inventory> GetInventoryByStoreId(int id)
+        {
+            return _repo.GetInventoryByStoreId(id);
+        }
+
         public StoreFront StoreById(int id)
         {
             return _repo.StoreById(id);
