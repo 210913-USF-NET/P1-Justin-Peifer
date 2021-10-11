@@ -35,9 +35,15 @@
                     @ViewBag.ChosenProduct.Description
                 </td>
                 <td>
-                    @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+                    <form>
+                        <fieldset>
+                            <label for="OrderQuantity">Quantity to buy</label>
+                            <input type="number" id="orderQuantity" name="orderQuantity" min="1" max="@ViewBag.ChosenProductInv.Quantity">
+                            <input type="hidden" id="productId" name="productId" value="@ViewBag.ChosenProduct.Id">
+                            <input type="hidden" id="storeId" name="storeId" value="@ViewBag.ChosenProductInv.StoreFrontId">
+                            <input type="submit" value="ProductDetails">
+                        </fieldset>
+                    </form>
                 </td>
             </tr>
     </tbody>

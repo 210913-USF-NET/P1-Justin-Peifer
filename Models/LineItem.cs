@@ -15,6 +15,13 @@ namespace Models
 
         public LineItem() {}
 
+        public LineItem(int StoreFrontId, int ProductId, int Quantity)
+        {
+            this.StoreFrontId = StoreFrontId;
+            this.ProductId = ProductId;
+            this.Quantity = Quantity;
+        }
+
         public LineItem (int OrderId, int StoreFrontId, int ProductId, int Quantity){
             this.OrderId = OrderId;
             this.StoreFrontId = StoreFrontId;
