@@ -31,14 +31,30 @@ namespace WebUI.Controllers
         }
 
 
+        public ActionResult DeleteLineItem(int index)
+        {
+            shoppingCart.RemoveAt(index);
+            return RedirectToAction("ViewCurrentOrder");
+        }
+
         public ActionResult ViewCurrentOrder()
         {
-            if (shoppingCart != null)
+            if (shoppingCart.Count() !=0)
             {
-                return View(shoppingCart);
+                shoppingCart.Sort((x, y) => x.StoreFrontId.CompareTo(y.StoreFrontId));//sorts by store Id for easier reading if user bought from multiple stores.
+                ViewBag.Cart = shoppingCart;
+                ViewBag.ProductInfo = _bl.GetAllProducts();
+                ViewBag.Stores = _bl.GetAllStoreFronts();
+                return View();
             }
             else return RedirectToAction("Index");
         }
+
+        public ActionResult ViewAllOrders(List<Order> orders)
+        {
+            return View(orders);
+        }
+
 
         // GET: HomeController1/Details/5
         public ActionResult Products(int id)
@@ -76,13 +92,15 @@ namespace WebUI.Controllers
             else
             {
                 List<LineItem> originalCart = shoppingCart;
+                bool change = false;
                 foreach (LineItem item in shoppingCart){
                     if(item.ProductId==productId && item.StoreFrontId == storeId)
                     {
+                        change = true;
                         item.Quantity = orderQuantity;
                     }
                 }
-                if (originalCart==shoppingCart)
+                if (change==false)
                 {
                     shoppingCart.Add(toBuy);
                 }

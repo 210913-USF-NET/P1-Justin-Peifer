@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Models.LineItem>
+﻿@using Models; 
 
 @{
     ViewData["Title"] = "ViewCurrentOrder";
@@ -6,48 +6,61 @@
 
 <h1>ViewCurrentOrder</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Quantity)
+                Quantity
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Order)
+                Product
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Product)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Store)
+                StoreFront Ordered From 
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Order.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Product.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Store.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @for (int x = 0; x < ViewBag.Cart.Count; x++)
+        {
+            Product currentProduct = null;
+            StoreFront currentStoreFront = null;
+            @for (int y = 0; y < ViewBag.ProductInfo.Count; y++)
+            {
+                if (ViewBag.Cart[x].ProductId == ViewBag.ProductInfo[y].Id)
+                {
+                    currentProduct = ViewBag.ProductInfo[y];
+                    y = ViewBag.ProductInfo.Count;
+                }
+            }
+            for (int z = 0; z < ViewBag.Stores.Count; z++)
+            {
+                if (ViewBag.Cart[x].StoreFrontId == ViewBag.Stores[z].Id)
+                {
+                    currentStoreFront = ViewBag.Stores[z];
+                    z = ViewBag.Stores.Count;
+                }
+            }
+            <tr>
+                <td>
+                    @ViewBag.Cart[x].Quantity
+                </td>
+                <td>
+                    @currentProduct.Name
+                </td>
+                <td>
+                    @currentStoreFront.State
+                </td>
+                <td>
+                    <a asp-action="DeleteLineItem" asp-route-id="@x">Remove From Cart</a>
+                </td>
+            </tr>
+        }
+
+        <p>
+            <a asp-action="SubmitOrder">Submit Order</a>
+        </p>
     </tbody>
 </table>
