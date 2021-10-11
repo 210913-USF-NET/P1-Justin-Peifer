@@ -20,6 +20,9 @@ namespace WebUI.Controllers
         {
             _bl = bl;
         }
+
+
+        static List<LineItem> shoppingCart = new List<LineItem>();
         // GET: HomeController1
         public ActionResult Index()
         {
@@ -27,12 +30,12 @@ namespace WebUI.Controllers
             return View(allStoreFronts);
         }
 
+
         public ActionResult ViewCurrentOrder()
         {
-            if (ViewBag.Shoppingcart != null)
+            if (shoppingCart != null)
             {
-                List<LineItem> cart = ViewBag.Shoppingcart;
-                return View(cart);
+                return View(shoppingCart);
             }
             else return RedirectToAction("Index");
         }
@@ -64,19 +67,24 @@ namespace WebUI.Controllers
         [HttpPost]
         public ActionResult ProductDetails(int orderQuantity, int productId, int storeId)
         {
-            if (ViewBag.ShoppingCart==null)
+
+            LineItem toBuy = new LineItem(storeId, productId, orderQuantity);
+            if (shoppingCart.Count()==0)
             {
-                ViewBag.ShoppingCart = new List<LineItem>();
-                LineItem item = new LineItem(storeId, productId, orderQuantity);
-                ViewBag.ShoppinCart.Add(item);
+                shoppingCart.Add(toBuy);
             }
             else
             {
-                foreach (LineItem item in ViewBag.ShoppingCart){
+                List<LineItem> originalCart = shoppingCart;
+                foreach (LineItem item in shoppingCart){
                     if(item.ProductId==productId && item.StoreFrontId == storeId)
                     {
                         item.Quantity = orderQuantity;
                     }
+                }
+                if (originalCart==shoppingCart)
+                {
+                    shoppingCart.Add(toBuy);
                 }
             }
             return RedirectToAction("ViewCurrentOrder");

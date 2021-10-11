@@ -35,7 +35,7 @@
                     @ViewBag.ChosenProduct.Description
                 </td>
                 <td>
-                    <form>
+                    <form asp-action="ProductDetails">
                         <fieldset>
                             <label for="OrderQuantity">Quantity to buy</label>
                             <input type="number" id="orderQuantity" name="orderQuantity" min="1" max="@ViewBag.ChosenProductInv.Quantity">
