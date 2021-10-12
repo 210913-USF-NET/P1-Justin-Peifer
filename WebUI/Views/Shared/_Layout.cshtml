@@ -9,6 +9,22 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
+<style>
+    table, th, td {
+        border: 1px solid black;
+        padding: 5px;
+    }
+
+    table {
+        border-spacing: 15px;
+        background-color: #cc9900;
+        border: 1px solid black;
+    }
+    form {
+        text-align:center;
+    }
+
+</style>
 <body style="background-image: linear-gradient(#ffaa11, #ffaa11, saddlebrown)">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3" style="background-color: #ffaa11; ">
@@ -48,11 +64,16 @@
 
 
         </header>
+    <center>
+        <style>
+
+        </style>
         <div>
-            <main role="main" class="pb-3">
+            <main role="main">
                 @RenderBody()
             </main>
         </div>
+    </center>
 
         <footer class="border-top footer text-muted">
             <div class="container">

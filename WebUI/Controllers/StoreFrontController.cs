@@ -69,9 +69,9 @@ namespace WebUI.Controllers
         public ActionResult ViewOrders(int id)
             //uses a customer's Id if the user is a customer, but uses the storeId if a manager uses it
         {
-            if (Request.Cookies["CurrentUserAccess"] == "True")
+            if (Request.Cookies["CurrentUserAccess"] == "False")
             {
-                List<Order> orders = _bl.OrderByUserId(id);
+                List<Order> orders = _bl.OrderByUserId(Convert.ToInt32(Request.Cookies["CurrentUserId"]));
                 return View(orders);
             }
             else if (Request.Cookies["CurrentUserAccess"] == "True")
