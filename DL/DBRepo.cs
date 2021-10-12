@@ -255,7 +255,7 @@ namespace DL
         /// <param name="storeOrderedFrom"> The Store that the order was placed at</param>
         /// <param name="order">The Order, should include LineItems</param>
         /// <returns>Returns the placed order</returns>
-        public Order PlaceOrder(StoreFront storeOrderedFrom, Order order)
+        public Order PlaceOrder(Order order)
         {
 
             foreach (LineItem item in order.LineItems)
@@ -263,7 +263,7 @@ namespace DL
                 LineItem addedItem = new LineItem()
                 {
                     OrderId = order.Id,
-                    StoreFrontId = storeOrderedFrom.Id,
+                    StoreFrontId = item.StoreFrontId,
                     ProductId = item.ProductId,
                     Quantity = item.Quantity
                 };
@@ -279,12 +279,12 @@ namespace DL
         /// </summary>
         /// <param name="storeToUpdate">The store that needs to be updated</param>
         /// <param name="orderedProduct"> A list of LineItems that were bought. This needs to be subtracted from the store's inventory</param>
-        public void UpdateStock(StoreFront storeToUpdate, List<LineItem> orderedProduct)
+        public void UpdateStock(List<LineItem> orderedProduct)
         {
             foreach (LineItem item in orderedProduct)
             {
                 Inventory updatedInventory = (from i in _context.Inventories
-                                                       where i.ProductId == item.ProductId && i.StoreFrontId == storeToUpdate.Id
+                                                       where i.ProductId == item.ProductId && i.StoreFrontId == item.StoreFrontId
                                                        select i).SingleOrDefault();
 
                 updatedInventory.Quantity = updatedInventory.Quantity - item.Quantity;
@@ -301,12 +301,12 @@ namespace DL
         /// <param name="amountToAdd"></param>
         /// <param name="StoreFrontId"></param>
         /// <returns></returns>
-        public int UpdateStock(Inventory inventoryToUpdate, int amountToAdd, int StoreFrontId)
+        public int UpdateStock(Inventory inventoryToUpdate, int amountToAdd)
         {
             Inventory inventoryToEdit = new Inventory()
             {
                 Id = inventoryToUpdate.Id,
-                StoreFrontId = StoreFrontId,
+                StoreFrontId = inventoryToUpdate.StoreFrontId,
                 ProductId = inventoryToUpdate.ProductId,
                 Quantity = inventoryToUpdate.Quantity + amountToAdd
 

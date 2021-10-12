@@ -23,22 +23,17 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="StoreFront" asp-action="Index">Shop</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-
                     </ul>
                 </div>
             </div>
             <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-
                         @if (Context.Request.Cookies.TryGetValue("CurrentUserId", out string value) == false)
                         {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">Login</a>
+                            </li>
                         }
                         else
                         {
@@ -46,8 +41,8 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Profile">Profile</a>
                             </li>
                         }
-                    </li>
-                </ul>
+                        </li>
+                    </ul>
             </div>
         </nav>
     </header>

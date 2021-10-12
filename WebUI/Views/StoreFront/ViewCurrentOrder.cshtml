@@ -17,7 +17,13 @@
                 Product
             </th>
             <th>
-                StoreFront Ordered From 
+                StoreFront Ordered From
+            </th>
+            <th>
+                Price Per Item
+            </th>
+            <th>
+                Price
             </th>
             <th></th>
         </tr>
@@ -43,24 +49,40 @@
                     z = ViewBag.Stores.Count;
                 }
             }
-            <tr>
-                <td>
-                    @ViewBag.Cart[x].Quantity
-                </td>
-                <td>
-                    @currentProduct.Name
-                </td>
-                <td>
-                    @currentStoreFront.State
-                </td>
-                <td>
-                    <a asp-action="DeleteLineItem" asp-route-id="@x">Remove From Cart</a>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @ViewBag.Cart[x].Quantity
+            </td>
+            <td>
+                @currentProduct.Name
+            </td>
+            <td>
+                @currentStoreFront.State
+            </td>
+            <td>
+                @currentProduct.Price
+            </td>
+            <td>
+                @(currentProduct.Price*ViewBag.Cart[x].Quantity)
+                <p hidden>@(ViewBag.Price=ViewBag.Price+(currentProduct.Price*ViewBag.Cart[x].Quantity))</p>
+            </td>
+            <td>
+                <a asp-action="DeleteLineItem" asp-route-id="@x">Remove From Cart</a>
+            </td>
+        </tr>
         }
-
-        <p>
-            <a asp-action="SubmitOrder">Submit Order</a>
-        </p>
     </tbody>
 </table>
+
+<p>
+    Your total will be $@ViewBag.Price.
+    @if (Context.Request.Cookies["CurrentUser"] == null)
+    {
+        <a asp-controller="User" asp-action="Login">Please login before ordering.</a>
+    }
+    @if (Context.Request.Cookies["CurrentUser"] != null)
+    {
+    <a asp-action="SubmitOrder" asp-route-id="@ViewBag.Price">Submit Order</a>
+    }
+
+</p>

@@ -63,16 +63,16 @@ namespace SBL
         public List <Order> OrderByUserId(int UserId){
             return _repo.OrderByUserId(UserId);
         }
-        public Order PlaceOrder(StoreFront store, Order order){
-            return _repo.PlaceOrder(store, order);
+        public Order PlaceOrder(Order order){
+            return _repo.PlaceOrder(order);
         }
         
-        public void UpdateStock(StoreFront storeToUpdate, List<LineItem> orderedProduct){
-            _repo.UpdateStock(storeToUpdate, orderedProduct);
+        public void UpdateStock(List<LineItem> orderedProduct){
+            _repo.UpdateStock(orderedProduct);
         }
 
-        public int UpdateStock(Inventory inventoryToUpdate, int amountToAdd, int StoreFrontId){
-                    return _repo.UpdateStock(inventoryToUpdate, amountToAdd, StoreFrontId);
+        public int UpdateStock(Inventory inventoryToUpdate, int amountToAdd){
+                    return _repo.UpdateStock(inventoryToUpdate, amountToAdd);
                 }
         
 

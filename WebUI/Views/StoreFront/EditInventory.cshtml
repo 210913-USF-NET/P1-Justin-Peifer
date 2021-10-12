@@ -1,0 +1,49 @@
+﻿@using Models;
+@{
+    ViewData["Title"] = "Edit Product Inventory";
+}
+
+<h1>@ViewBag.ProductInfo.Name</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Quantity
+            </th>
+            <th>
+                Product Name
+            </th>
+            <th>
+                Description
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr>
+            <td>
+                @ViewBag.Item.Quantity
+            </td>
+            <td>
+                @ViewBag.ProductInfo.Name
+            </td>
+            <td>
+                @ViewBag.ProductInfo.Description
+            </td>
+            <td>
+                <form asp-action="EditInventory">
+                    <fieldset>
+                        <label for="OrderQuantity">Add or Remove Items:</label>
+                        <input type="number" id="quantityToChange" name="quantityToChange" min="@(ViewBag.Item.Quantity*-1)">
+                        <input type="hidden" id="invId" name="invId" value="@ViewBag.Item.Id">
+                        <input type="submit" value="Add to Cart">
+                    </fieldset>
+                </form>
+            </td>
+        </tr>
+    </tbody>
+</table>

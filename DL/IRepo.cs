@@ -10,11 +10,11 @@ namespace DL
         //StoreFront CreateStoreFront(StoreFront store);
         List<StoreFront> GetAllStoreFronts();
 
-        Order PlaceOrder(StoreFront storeOrderedFrom, Order order);
+        Order PlaceOrder(Order order);
 
-        void UpdateStock(StoreFront storeToUpdate, List<LineItem> orderedProduct);
+        void UpdateStock(List<LineItem> orderedProduct);
 
-        int UpdateStock(Inventory inventoryToUpdate, int amountToAdd, int StoreFrontId);//method overloading
+        int UpdateStock(Inventory inventoryToUpdate, int amountToAdd);//method overloading
         
 
         //Users:

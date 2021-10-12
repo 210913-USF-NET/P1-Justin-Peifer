@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Our Beelicious Locations:</h1>
 
 <table class="table">
     <thead>
@@ -31,9 +31,9 @@
                 
                 @if (Context.Request.Cookies["CurrentUserAccess"] == "True")
                 {
-                <a asp-action="Delete" asp-route-id="@item.Id">Edit this store's inventory</a>
+                <a asp-action="ViewInventory" asp-route-id="@item.Id">Edit this store's inventory</a>
                 }
-                @if (Context.Request.Cookies["CurrentUserAccess"] == "False")
+                @if (Context.Request.Cookies["CurrentUserAccess"] != "True")
                 {
                 <a asp-action="Products" asp-route-id="@item.Id">Choose this store.</a>
                 }

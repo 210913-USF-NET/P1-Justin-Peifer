@@ -179,6 +179,9 @@ namespace WebUI.Controllers
                     return RedirectToAction("Profile", allUsers[x].Id);
                 }
             }
+            if (Request.Cookies["Checkout"] == "True"){
+                RedirectToAction("SubmitOrder", "StoreFront");
+            }
             return RedirectToAction("Login");
         }
 

@@ -30,6 +30,37 @@ namespace WebUI.Controllers
             return View(allStoreFronts);
         }
 
+        public ActionResult ViewInventory(int id)
+        {
+            ViewBag.Stock = _bl.GetInventoryByStoreId(id);
+            ViewBag.ProductInfo = _bl.GetAllProducts();
+            return View();
+        }
+
+        public ActionResult EditInventory(int id)
+        {
+            ViewBag.Item = _bl.InventoryById(id);
+            ViewBag.ProductInfo = _bl.ProductByID(ViewBag.Item.ProductId);
+            return View();
+        }
+        [HttpPost]
+        public ActionResult EditInventory(int quantityToChange, int invId)
+        {
+            Inventory item = _bl.InventoryById(invId);
+            _bl.UpdateStock(item, quantityToChange);
+            return RedirectToAction("Index");
+        }
+
+
+        public ActionResult ChangeStock(Inventory item)
+        {
+            return View(item);
+        }
+        [HttpPost]
+      /*  public ActionResult ChangeStock(int quantity)
+        {
+            _bl.UpdateStock(quantity);
+        }*/
 
         public ActionResult DeleteLineItem(int index)
         {
@@ -41,6 +72,7 @@ namespace WebUI.Controllers
         {
             if (shoppingCart.Count() !=0)
             {
+                ViewBag.Price = 0;
                 shoppingCart.Sort((x, y) => x.StoreFrontId.CompareTo(y.StoreFrontId));//sorts by store Id for easier reading if user bought from multiple stores.
                 ViewBag.Cart = shoppingCart;
                 ViewBag.ProductInfo = _bl.GetAllProducts();
@@ -55,6 +87,16 @@ namespace WebUI.Controllers
             return View(orders);
         }
 
+        public ActionResult SubmitOrder(int price)
+        {
+            Order orderToSend = _bl.NewOrder(Convert.ToInt32(Request.Cookies["CurrentUserId"]));
+            orderToSend.LineItems = shoppingCart;
+            _bl.PlaceOrder(orderToSend);
+            _bl.UpdateStock(shoppingCart);
+            shoppingCart.Clear();
+            Response.Cookies.Delete("Checkout");
+            return View(price);
+        }
 
         // GET: HomeController1/Details/5
         public ActionResult Products(int id)

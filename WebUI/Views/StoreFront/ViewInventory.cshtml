@@ -1,0 +1,46 @@
+﻿@using Models;
+
+@{
+    ViewData["Title"] = "View";
+}
+
+<h1>View</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Product
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@for(int y=0; y<ViewBag.Stock.Count; y++){
+    Product currentProduct = null;
+        @for(int x=0; x<ViewBag.ProductInfo.Count; x++)
+        {
+            if(ViewBag.Stock[y].ProductId==ViewBag.ProductInfo[x].Id)
+            {
+                currentProduct = ViewBag.ProductInfo[x];
+                x = ViewBag.ProductInfo.Count;
+            }
+        }
+        <tr>
+            <td>
+                @currentProduct.Name
+            </td>
+            <td>
+                @ViewBag.Stock[y].Quantity
+            </td>
+            <td>
+                <a asp-action="EditInventory" asp-route-id="@ViewBag.Stock[y].Id">Edit</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
