@@ -13,11 +13,14 @@
         <input type="submit" value="Search" />
     </p>
 }
-
+<head>
+    <script src="~/js/sorttable.js"></script>
+</head>
+<body class="text-center">
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="sortable" align="center">
     <thead>
         <tr>
             <th>
@@ -72,3 +75,5 @@
         }
     </tbody>
 </table>
+
+</body>

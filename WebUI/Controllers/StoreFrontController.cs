@@ -56,12 +56,11 @@ namespace WebUI.Controllers
         {
             return View(item);
         }
-        [HttpPost]
+        
       /*  public ActionResult ChangeStock(int quantity)
         {
             _bl.UpdateStock(quantity);
         }*/
-
         public ActionResult DeleteLineItem(int index)
         {
             shoppingCart.RemoveAt(index);

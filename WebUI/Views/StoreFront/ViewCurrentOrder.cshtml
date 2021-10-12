@@ -76,13 +76,18 @@
 
 <p>
     Your total will be $@ViewBag.Price.
-    @if (Context.Request.Cookies["CurrentUser"] == null)
-    {
-        <a asp-controller="User" asp-action="Login">Please login before ordering.</a>
-    }
-    @if (Context.Request.Cookies["CurrentUser"] != null)
-    {
-    <a asp-action="SubmitOrder" asp-route-id="@ViewBag.Price">Submit Order</a>
-    }
 
+    @if (Context.Request.Cookies.TryGetValue("CurrentUserId", out string value) == false)
+    {
+        <li class="nav-item">
+            <a asp-controller="User" asp-action="Login">Please login before ordering.</a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+        <a asp-action="SubmitOrder" asp-route-id="@ViewBag.Price">Submit Order</a>
+        </li>
+    }
+   
 </p>
