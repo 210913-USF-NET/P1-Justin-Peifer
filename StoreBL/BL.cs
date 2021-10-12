@@ -63,6 +63,10 @@ namespace SBL
         public List <Order> OrderByUserId(int UserId){
             return _repo.OrderByUserId(UserId);
         }
+        public List<Order> OrderByStoreId(int storeId)
+        {
+            return _repo.OrderByStoreId(storeId);
+        }
         public Order PlaceOrder(Order order){
             return _repo.PlaceOrder(order);
         }

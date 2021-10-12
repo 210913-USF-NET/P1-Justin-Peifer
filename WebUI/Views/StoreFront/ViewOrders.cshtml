@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Models.Order>
+
+@{
+    ViewData["Title"] = "ViewOrders";
+}
+
+<head>
+    <script src="~/js/sorttable.js"></script>
+</head>
+
+<h1>ViewOrders</h1>
+
+<table align="center" class="sortable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateOrdered)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOrdered)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

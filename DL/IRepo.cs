@@ -35,7 +35,7 @@ namespace DL
         List<Inventory> GetInventoryByStoreId(int id);
         Inventory InventoryById(int id);
         //Orders
-        // void ClearBadOrder(int orderId);
+        List<Order> OrderByStoreId(int storeId);
         Order NewOrder(int userId);
         List <Order> OrderByUserId(int UserId);
         Order OrderInfoById(int id);

@@ -6,7 +6,7 @@
 
 <h1>Our Beelicious Locations:</h1>
 
-<table class="table">
+<table align="center" class="table">
     <thead>
         <tr>
             <th>
@@ -31,7 +31,12 @@
                 
                 @if (Context.Request.Cookies["CurrentUserAccess"] == "True")
                 {
+
                 <a asp-action="ViewInventory" asp-route-id="@item.Id">Edit this store's inventory</a>
+            <td>
+
+                <a asp-action="ViewOrders" asp-route-id="@item.Id">View Order History.</a>
+            </td>
                 }
                 @if (Context.Request.Cookies["CurrentUserAccess"] != "True")
                 {

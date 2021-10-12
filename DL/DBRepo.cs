@@ -206,6 +206,39 @@ namespace DL
         /// </summary>
         /// <param name="UserId">The User's ID</param>
         /// <returns>A list of every order that the User has made</returns>
+        public List<Order> OrderByStoreId(int storeId)
+        {
+            List<LineItem> allOrdered= _context.LineItems.Where(
+                order => order.StoreFrontId.Equals(storeId)
+            ).AsNoTracking().Select(
+                LineItem => new LineItem()
+                {
+                    Id = LineItem.Id,
+                    OrderId = LineItem.OrderId,
+                    StoreFrontId = LineItem.StoreFrontId,
+                    ProductId = LineItem.ProductId,
+                    Quantity = LineItem.Quantity
+                }
+            ).ToList();
+            List<Order> storeOrders= new();
+            storeOrders.Add(OrderInfoById(allOrdered[0].OrderId));
+            for(int x =1; x<allOrdered.Count; x++)
+            {
+                bool needs = true;
+                for(int y =0; y<storeOrders.Count; y++)
+                {
+                    if (storeOrders[y].Id == allOrdered[x].OrderId)
+                    {
+                        needs = false;
+                    }
+                }
+                if (needs)
+                {
+                    storeOrders.Add(OrderInfoById(allOrdered[x].OrderId));
+                }
+            }
+            return storeOrders;
+        }
         public List<Order> OrderByUserId(int UserId)
         {
             return _context.Orders.Where(

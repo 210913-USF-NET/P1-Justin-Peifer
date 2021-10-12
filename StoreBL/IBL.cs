@@ -23,7 +23,7 @@ namespace SBL
         User GetUserById(int? id);
         Order NewOrder(int userId);
         Order PlaceOrder(Order order);
-        // void ClearBadOrder(int orderId);
+        List<Order> OrderByStoreId(int storeId);
         List <Order> OrderByUserId(int UserId);
         void UpdateStock(List<LineItem> orderedProduct);
         

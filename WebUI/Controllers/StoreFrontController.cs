@@ -66,6 +66,21 @@ namespace WebUI.Controllers
             shoppingCart.RemoveAt(index);
             return RedirectToAction("ViewCurrentOrder");
         }
+        public ActionResult ViewOrders(int id)
+            //uses a customer's Id if the user is a customer, but uses the storeId if a manager uses it
+        {
+            if (Request.Cookies["CurrentUserAccess"] == "True")
+            {
+                List<Order> orders = _bl.OrderByUserId(id);
+                return View(orders);
+            }
+            else if (Request.Cookies["CurrentUserAccess"] == "True")
+            {
+                List<Order> orders = _bl.OrderByStoreId(id);
+                return View(orders);
+            }
+            return View();
+        }
 
         public ActionResult ViewCurrentOrder()
         {
