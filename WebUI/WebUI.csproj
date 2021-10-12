@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <Folder Include="Views\Management\" />
+    <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
 </Project>
