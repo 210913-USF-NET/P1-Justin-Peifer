@@ -1,0 +1,94 @@
+﻿@using Models;
+
+@{
+    ViewData["Title"] = "ViewOrder";
+}
+
+<h4>Order Number: #@ViewBag.Order.Id</h4>
+
+<head>
+    <script src="~/js/sorttable.js"></script>
+</head>
+<table class="sortable" width="75%">
+    <thead>
+        <tr>
+            <th>
+                Quantity
+            </th>
+            <th>
+                Product
+            </th>
+            <th>
+                StoreFront Ordered From
+            </th>
+            <th>
+                Price Per Item
+            </th>
+            <th>
+                Price
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int x = 0; x < ViewBag.Items.Count; x++)
+        {
+            Product currentProduct = null;
+            StoreFront currentStoreFront = null;
+            @for (int y = 0; y < ViewBag.ProductInfo.Count; y++)
+            {
+                if (ViewBag.Items[x].ProductId == ViewBag.ProductInfo[y].Id)
+                {
+                    currentProduct = ViewBag.ProductInfo[y];
+                    y = ViewBag.ProductInfo.Count;
+                }
+            }
+            for (int z = 0; z < ViewBag.Stores.Count; z++)
+            {
+                if (ViewBag.Items[x].StoreFrontId == ViewBag.Stores[z].Id)
+                {
+                    currentStoreFront = ViewBag.Stores[z];
+                    z = ViewBag.Stores.Count;
+                }
+            }
+            <tr>
+                <td>
+                    @ViewBag.Items[x].Quantity
+                </td>
+                <td>
+                    @currentProduct.Name
+                </td>
+                <td>
+                    @currentStoreFront.State
+                </td>
+                <td>
+                    @currentProduct.Price
+                </td>
+                <td>
+                    @(currentProduct.Price*ViewBag.Items[x].Quantity)
+                    <p hidden>@(ViewBag.Price=ViewBag.Price+(currentProduct.Price*ViewBag.Items[x].Quantity))</p>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p>
+    @if (ViewBag.User.Id== Convert.ToInt32(Context.Request.Cookies["CurrentUserId"]))
+    {
+<p>
+    You ordered this on @ViewBag.Order.DateOrdered.
+</p>
+    }
+    else
+    {
+<p>
+    Ordered by @ViewBag.User.Name on @ViewBag.Order.DateOrdered
+</p>
+    }
+    <br />
+    For a total of $@ViewBag.Price.
+    <a href="javascript:void(0);" onclick="history.go(-1);">Back to List</a>
+
+
+</p>

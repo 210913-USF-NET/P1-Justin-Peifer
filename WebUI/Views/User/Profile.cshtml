@@ -35,11 +35,18 @@
     </p>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Edit Your Profile", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Logout", "Logout")
     <br />
     @if (Context.Request.Cookies["CurrentUserAccess"] == "True")
     {
-        @Html.ActionLink("View all users", "Index");
+        @Html.ActionLink("View and Manage Users", "Index");
+        <br />
+        <a asp-controller="StoreFront" asp-action="Index">View and Manage Stores</a>
+    }
+    else
+    {
+
+        <a asp-controller="StoreFront" asp-action="ViewOrders">Past Orders</a>
     }
 </div>

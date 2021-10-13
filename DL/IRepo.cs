@@ -15,7 +15,7 @@ namespace DL
         void UpdateStock(List<LineItem> orderedProduct);
 
         int UpdateStock(Inventory inventoryToUpdate, int amountToAdd);//method overloading
-        
+        List<LineItem> ItemsInOrder(int orderId);
 
         //Users:
         User EditUser(User userToEdit);

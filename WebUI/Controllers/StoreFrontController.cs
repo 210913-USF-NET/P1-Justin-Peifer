@@ -71,6 +71,7 @@ namespace WebUI.Controllers
         {
             if (Request.Cookies["CurrentUserAccess"] == "False")
             {
+                ViewBag.UserId = "True";
                 List<Order> orders = _bl.OrderByUserId(Convert.ToInt32(Request.Cookies["CurrentUserId"]));
                 return View(orders);
             }
@@ -94,6 +95,18 @@ namespace WebUI.Controllers
                 return View();
             }
             else return RedirectToAction("Index");
+        }
+        public ActionResult ViewOrderDetails(int id)
+        {
+            Order order = _bl.OrderInfoById(id);
+            ViewBag.Price = 0;
+            ViewBag.Order = order;
+            ViewBag.Items = _bl.ItemsInOrder(id);
+            ViewBag.ProductInfo = _bl.GetAllProducts();
+            ViewBag.Stores = _bl.GetAllStoreFronts();
+            ViewBag.User = _bl.GetUserById(order.UserId);
+            return View();
+            
         }
 
         public ActionResult ViewAllOrders(List<Order> orders)

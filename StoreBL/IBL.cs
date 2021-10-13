@@ -24,9 +24,12 @@ namespace SBL
         Order NewOrder(int userId);
         Order PlaceOrder(Order order);
         List<Order> OrderByStoreId(int storeId);
+        Order OrderInfoById(int id);
         List <Order> OrderByUserId(int UserId);
         void UpdateStock(List<LineItem> orderedProduct);
-        
+        List<LineItem> ItemsInOrder(int orderId);
+
+
         int UpdateStock(Inventory inventoryToUpdate, int amountToAdd);
 
         StoreFront StoreById(int id);

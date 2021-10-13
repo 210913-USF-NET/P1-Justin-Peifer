@@ -239,6 +239,20 @@ namespace DL
             }
             return storeOrders;
         }
+        public List<LineItem> ItemsInOrder(int orderId)
+        {
+            return _context.LineItems.Where(
+                order => order.OrderId.Equals(orderId)
+            ).AsNoTracking().Select(
+                LineItem => new LineItem()
+                {
+                    Id = LineItem.Id,
+                    OrderId = LineItem.OrderId,
+                    StoreFrontId = LineItem.StoreFrontId,
+                    ProductId = LineItem.ProductId,
+                    Quantity = LineItem.Quantity
+                }).ToList();
+        }
         public List<Order> OrderByUserId(int UserId)
         {
             return _context.Orders.Where(

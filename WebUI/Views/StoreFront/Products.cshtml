@@ -4,8 +4,10 @@
 }
 
 <h1>Products</h1>
-
-<table class="table">
+<head>
+    <script src="~/js/sorttable.js"></script>
+</head>
+<table class="sortable" width="75%">
     <thead>
         <tr>
             <th>
@@ -20,10 +22,10 @@
         </tr>
     </thead>
     <tbody>
-        @for(int z = 0; z<Enumerable.Count(ViewBag.Inventory); z++)
+        @for (int z = 0; z < Enumerable.Count(ViewBag.Inventory); z++)
         {
             Product currentProductInfo = new Product();
-            @for (int x =0; x<Enumerable.Count(ViewBag.Product); x++)
+            @for (int x = 0; x < Enumerable.Count(ViewBag.Product); x++)
             {
                 if (ViewBag.Inventory[z].ProductId == ViewBag.Product[x].Id)
                 {
@@ -44,7 +46,7 @@
                 <td>
                     @Html.ActionLink("Order", "ProductDetails", new { id = ViewBag.Inventory[z].Id })
                     @*<a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
                 </td>
             </tr>
         }

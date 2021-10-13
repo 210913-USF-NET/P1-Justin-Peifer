@@ -56,7 +56,10 @@ namespace SBL
         {
             return _repo.NewOrder(userId);
         }
-
+        public List<LineItem> ItemsInOrder(int orderId)
+        {
+            return _repo.ItemsInOrder(orderId);
+        }
         public Order OrderInfoById(int id){
             return _repo.OrderInfoById(id);
         }
