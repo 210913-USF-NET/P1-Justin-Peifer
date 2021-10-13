@@ -157,6 +157,10 @@ namespace DL
         /// <returns>The updated user object</returns>
         public User EditUser(User userToEdit)
         {
+            if (userToEdit.Password == null || userToEdit.Password == "")
+            {
+                userToEdit.Password = GetUserById(userToEdit.Id).Password;
+            }
 
             User editedUser = new User()
             {
