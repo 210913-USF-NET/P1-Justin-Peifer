@@ -16,29 +16,35 @@
             @if (Context.Request.Cookies["CurrentUserAccess"] == "True")
             {
                 <th>
-                    @Html.DisplayNameFor(model => model.UserId)
+                    User ID
                 </th>
             }
                 <th>
                     Date Ordered
                 </th>
+                <th>
+                    Price
+                </th>
                 <th></th>
             </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@for(int x=0; x< ViewBag.Orders.Count; x++){
         <tr>
             @if (Context.Request.Cookies["CurrentUserAccess"] == "True")
             {
             <td>
-                @Html.DisplayFor(modelItem => item.UserId)
+                @ViewBag.Orders[x].UserId
             </td>
             }
             <td>
-                @Html.DisplayFor(modelItem => item.DateOrdered)
+                @ViewBag.Orders[x].DateOrdered
             </td>
             <td>
-                <a asp-action="ViewOrderDetails" asp-route-id="@item.Id">Details</a>
+                $@ViewBag.Price[x]
+            </td>
+            <td>
+                <a asp-action="ViewOrderDetails" asp-route-id="@ViewBag.Orders[x].Id">Details</a>
             </td>
         </tr>
 }

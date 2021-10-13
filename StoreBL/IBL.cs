@@ -29,7 +29,7 @@ namespace SBL
         void UpdateStock(List<LineItem> orderedProduct);
         List<LineItem> ItemsInOrder(int orderId);
 
-
+        int OrderPrice(int orderId);
         int UpdateStock(Inventory inventoryToUpdate, int amountToAdd);
 
         StoreFront StoreById(int id);

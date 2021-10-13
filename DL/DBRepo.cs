@@ -506,7 +506,20 @@ namespace DL
                 }
             ).ToList();
         }
-
-
+        /// <summary>
+        /// returns the total price of all LineItems in an order
+        /// </summary>
+        /// <param name="orderId"> the Order to get</param>
+        /// <returns>total price of the order</returns>
+        public int OrderPrice(int orderId)
+        {
+            int price = 0;
+            List<LineItem> itemsBought = ItemsInOrder(orderId);
+            foreach (LineItem item in itemsBought)
+            {
+                price += (ProductByID(item.ProductId).Price) * item.Quantity;
+            }
+            return price;
+        }
     }
 }

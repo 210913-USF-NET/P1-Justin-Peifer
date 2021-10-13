@@ -72,13 +72,25 @@ namespace WebUI.Controllers
             if (Request.Cookies["CurrentUserAccess"] == "False")
             {
                 ViewBag.UserId = "True";
-                List<Order> orders = _bl.OrderByUserId(Convert.ToInt32(Request.Cookies["CurrentUserId"]));
-                return View(orders);
+                ViewBag.Orders = _bl.OrderByUserId(Convert.ToInt32(Request.Cookies["CurrentUserId"]));
+                ViewBag.Price = new List<int>();
+                for(int x =0; x<ViewBag.Orders.Count; x++)
+                {
+                    ViewBag.Price.Add(_bl.OrderPrice(ViewBag.Orders[x].Id));
+
+                }
+                return View();
             }
             else if (Request.Cookies["CurrentUserAccess"] == "True")
             {
-                List<Order> orders = _bl.OrderByStoreId(id);
-                return View(orders);
+                ViewBag.Orders = _bl.OrderByStoreId(id);
+                ViewBag.Price = new List<int>();
+                for (int x = 0; x < ViewBag.Orders.Count; x++)
+                {
+                    ViewBag.Price.Add(_bl.OrderPrice(ViewBag.Orders[x].Id));
+
+                }
+                return View();
             }
             return View();
         }

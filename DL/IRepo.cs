@@ -39,5 +39,6 @@ namespace DL
         Order NewOrder(int userId);
         List <Order> OrderByUserId(int UserId);
         Order OrderInfoById(int id);
+        int OrderPrice(int orderId);
     }
 }

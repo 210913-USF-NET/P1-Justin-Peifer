@@ -38,6 +38,10 @@ namespace SBL
             return _repo.GetAllUsers();
         }
 
+        public int OrderPrice(int orderId)
+        {
+            return _repo.OrderPrice(orderId);
+        }
         public User AddUser(User user)
         {
             return _repo.AddUser(user);
