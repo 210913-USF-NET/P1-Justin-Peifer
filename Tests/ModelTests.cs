@@ -24,6 +24,10 @@ namespace Tests
         [Theory]
         [InlineData("")]
         [InlineData("$#^%#$")]
+        [InlineData("Period.IntheName")]
+        [InlineData("KE$HA")]
+        [InlineData("Benny B. Benneson")]
+        [InlineData("FinalTest?")]
         public void UserShouldNotAllowInvalidName(string input)
         {
             //Arrange
