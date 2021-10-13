@@ -156,7 +156,7 @@ namespace WebUI.Controllers
         {
             if (Request.Cookies["CurrentUserId"] != null)
             {
-                return RedirectToAction("Profile", Request.Cookies["CurrentUserId"]);
+                return RedirectToAction("Profile");
             }
             else
             {
